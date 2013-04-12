@@ -10,12 +10,19 @@ import time
 def main():
     t = Terminal()
     oldfilename = None
+    current_folder = os.path.dirname(os.path.abspath(__file__))
+    files = os.path.join(current_folder, 'files')
+    if not os.path.isdir(files):
+        try:
+            os.mkdir(files)
+        except OSError:
+            print "Please delete the file called `files`"
+            return
     while True:
         r = requests.get('https://www.streamtext.net/player/'
                          'carttranscript?Event=WIPO')
         print "Requested"
-        current_folder = os.path.dirname(os.path.abspath(__file__))
-        filename = os.path.join(current_folder,
+        filename = os.path.join(current_folder, 'files',
                                 ''.join([str(datetime.utcnow()), '.txt']))
         print "Writing to {t.green} {filename} {t.normal}".format(
                 t=t, filename=filename)
