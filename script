@@ -23,6 +23,7 @@ import time
 
 
 def main():
+    # Turn this off via an argument
     t = Terminal()
     oldfilename = None
     current_folder = os.path.dirname(os.path.abspath(__file__))
@@ -54,6 +55,7 @@ def main():
                 print ("{t.bold}{t.blue}No change in file "
                        "size{t.normal}".format(t=t))
         oldfilename = filename
+        #TODO: Make this an argument
         time.sleep(5)
 
 
