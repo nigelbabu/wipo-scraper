@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from blessings import Terminal
+import ConfigParser
 import requests
 from datetime import datetime
 import os
@@ -25,6 +26,17 @@ import time
 def main():
     # Turn this off via an argument
     t = Terminal()
+    config = ConfigParser.ConfigParser()
+    try:
+        config.readfp(open('config.ini'))
+    except IOError:
+        raise Exception('Please create a config.ini file')
+    try:
+        url = config.get('app', 'url')
+    except ConfigParser.NoOptionError:
+        raise Exception('URL not set. Please set a url in config.ini')
+    if not url:
+        raise Exception('URL not set. Please set a url in config.ini')
     oldfilename = None
     current_folder = os.path.dirname(os.path.abspath(__file__))
     files = os.path.join(current_folder, 'files')
@@ -34,9 +46,9 @@ def main():
         except OSError:
             print "Please delete the file called `files`"
             return
+
     while True:
-        r = requests.get('https://www.streamtext.net/player/'
-                         'carttranscript?Event=WIPO')
+        r = requests.get(url)
         print "Requested"
         filename = os.path.join(current_folder, 'files',
                                 ''.join([str(datetime.utcnow()), '.txt']))
@@ -55,9 +67,7 @@ def main():
                 print ("{t.bold}{t.blue}No change in file "
                        "size{t.normal}".format(t=t))
         oldfilename = filename
-        #TODO: Make this an argument
-        time.sleep(5)
-
+        time.sleep(config.get('app', 'wait_time', vars={'wait_time': '60'}))
 
 
 if __name__ == '__main__':
