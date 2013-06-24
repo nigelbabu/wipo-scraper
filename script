@@ -67,7 +67,7 @@ def main():
                 print ("{t.bold}{t.blue}No change in file "
                        "size{t.normal}".format(t=t))
         oldfilename = filename
-        time.sleep(config.getint('app', 'wait_time', vars={'wait_time': '60'}))
+        time.sleep(int(config.get('app', 'wait_time', vars={'wait_time': '60'})))
 
 
 if __name__ == '__main__':
