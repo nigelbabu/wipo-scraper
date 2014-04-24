@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import argparse
 from blessings import Terminal
 import ConfigParser
 import requests
@@ -26,11 +27,20 @@ import time
 def main():
     # Turn this off via an argument
     t = Terminal()
+    parser = argparse.ArgumentParser(prog='wipo-scraper', description=
+                                     'Continuously scrape a changing webpage. '
+                                     'Built for scraping WIPO meeting logs.')
+    parser.add_argument('--config', '-c',  dest='config_file', action='store',
+                        default='config.ini', help='Path to config file')
+    parser.add_argument('--version', '-v', action='version',
+                        version='%(prog)s 1.1')
+    args = parser.parse_args()
     config = ConfigParser.ConfigParser()
     try:
-        config.readfp(open('config.ini'))
+        config.readfp(open(args.config_file))
     except IOError:
-        raise Exception('Please create a config.ini file')
+        raise Exception('Cannot find config file at '
+                        '{0}'.format(args.config_file))
     try:
         url = config.get('app', 'url')
     except ConfigParser.NoOptionError:
