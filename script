@@ -37,6 +37,10 @@ def main():
         raise Exception('URL not set. Please set a url in config.ini')
     if not url:
         raise Exception('URL not set. Please set a url in config.ini')
+    try:
+        event = config.get('app', 'event')
+    except ConfigParser.NoOptionError:
+        event = ''
     oldfilename = None
     current_folder = os.path.dirname(os.path.abspath(__file__))
     files = os.path.join(current_folder, 'files')
@@ -51,7 +55,9 @@ def main():
         r = requests.get(url)
         print "Requested"
         filename = os.path.join(current_folder, 'files',
-                                ''.join([str(datetime.utcnow()), '.txt']))
+                                ''.join([str(event),
+                                         str(datetime.utcnow()),
+                                         '.txt']))
         print "Writing to {t.green} {filename} {t.normal}".format(
                 t=t, filename=filename)
         with open(filename, 'w') as f:
