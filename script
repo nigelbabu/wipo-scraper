@@ -67,7 +67,7 @@ def main():
         filename = os.path.join(current_folder, 'files',
                                 ''.join([str(event),
                                          str(datetime.utcnow()),
-                                         '.txt']))
+                                         '.html']))
         print "Writing to {t.green} {filename} {t.normal}".format(
                 t=t, filename=filename)
         with open(filename, 'w') as f:
