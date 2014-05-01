@@ -20,6 +20,7 @@ from blessings import Terminal
 import ConfigParser
 import requests
 from datetime import datetime
+from calendar import timegm
 import os
 import time
 
@@ -64,9 +65,10 @@ def main():
     while True:
         r = requests.get(url)
         print "Requested"
+        current_time = timegm(datetime.utcnow().timetuple())
         filename = os.path.join(current_folder, 'files',
-                                ''.join([str(event),
-                                         str(datetime.utcnow()),
+                                ''.join([''.join([str(event), '-']),
+                                         str(current_time),
                                          '.html']))
         print "Writing to {t.green} {filename} {t.normal}".format(
                 t=t, filename=filename)
